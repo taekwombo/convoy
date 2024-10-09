@@ -16,8 +16,9 @@ use convoy::{
 };
 use fake::{Fake, Faker};
 use opentelemetry::{
-    baggage::BaggageExt, sdk::export::trace::SpanData, trace::SpanId, Context, Key,
+    baggage::BaggageExt, trace::SpanId, Context, Key,
 };
+use opentelemetry_sdk::export::trace::SpanData;
 use tracing::Instrument;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 

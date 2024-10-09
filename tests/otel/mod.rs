@@ -5,13 +5,14 @@ use std::{
 };
 
 use futures_lite::future::Boxed;
+use opentelemetry_sdk::{
+    export::trace::{ExportResult, SpanData, SpanExporter},
+    propagation::{BaggagePropagator, TraceContextPropagator},
+    trace::TracerProvider,
+};
 use opentelemetry::{
     global::{set_text_map_propagator, set_tracer_provider},
-    sdk::{
-        export::trace::{ExportResult, SpanData, SpanExporter},
-        propagation::{BaggagePropagator, TextMapCompositePropagator, TraceContextPropagator},
-        trace::TracerProvider,
-    },
+    propagation::TextMapCompositePropagator,
     trace::TracerProvider as _,
 };
 
@@ -39,7 +40,7 @@ impl SpanExporter for Exporter {
     fn export(
         &mut self,
         batch: Vec<SpanData>,
-    ) -> Boxed<opentelemetry::sdk::export::trace::ExportResult> {
+    ) -> Boxed<ExportResult> {
         self.spans.lock().unwrap().extend(batch);
 
         Box::pin(async move { ExportResult::Ok(()) })
